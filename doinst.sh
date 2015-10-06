@@ -28,14 +28,3 @@ preserve_perms() {
 preserve_perms etc/rc.d/rc.munin-node.new
 config etc/munin/munin-node.conf.new
 config etc/logrotate.d/munin-node.new
-
-# Add users and groups, if they don't exist
-/usr/bin/getent passwd munin > /dev/null
-if [ $? -ne 0 ]; then
-	groupadd -g 434 munin
-fi
-
-/usr/bin/getent passwd munin > /dev/null
-if [ $? -ne 0 ]; then
-	useradd -u 434 -g 434 -s /sbin/nologin munin
-fi

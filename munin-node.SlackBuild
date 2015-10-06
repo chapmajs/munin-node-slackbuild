@@ -9,27 +9,31 @@
 # glitch@glitchwrks.com
 # All rights reserved.
 
-CWD=$(pwd)
+
 if [ "$TMP" = "" ]; then
 	TMP=/tmp
 fi
 
+PRGNAM=munin-node
 VERSION=2.0.25
+BUILD=${BUILD:-4}
+TAG=${TAG:-_SBo}
 ARCH="noarch"
-BUILD=${BUILD:-3}
-APP=munin-node
+
+CWD=$(pwd)
+TMP=${TMP:-/tmp/SBo}
+PKG=$TMP/package-$PRGNAM
+OUTPUT=${OUTPUT:-/tmp}
+
 ARCHIVE_NAME=munin
-PKG=$TMP/package-$APP
 
 # Clean up old builds
 rm -rf $PKG
-mkdir -p $TMP $PKG
-rm -rf $TMP/$APP-$VERSION
-
-cd $TMP || exit 1
-
-tar zxvf $CWD/$ARCHIVE_NAME-$VERSION.tar.gz || exit 1
-cd $ARCHIVE_NAME-$VERSION || exit 1
+mkdir -p $TMP $PKG $OUTPUT
+cd $TMP
+rm -rf $PRGNAM-$VERSION
+tar zxvf $CWD/$ARCHIVE_NAME-$VERSION.tar.gz
+cd $ARCHIVE_NAME-$VERSION
 
 chown -R root:root .
 chmod -R u+w,go+r-w,a-s .
@@ -60,4 +64,4 @@ cat $CWD/doinst.sh > $PKG/install/doinst.sh
 cat $CWD/slack-desc > $PKG/install/slack-desc
 
 cd $PKG
-/sbin/makepkg -l y -c n $TMP/$APP-$VERSION-$ARCH-$BUILD.tgz
+/sbin/makepkg -l y -c n $OUTPUT/$PRGNAM-$VERSION-$ARCH-$BUILD$TAG.${PKGTYPE:-tgz}
